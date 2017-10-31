@@ -1,4 +1,5 @@
 package main;
+import java.util.*;
 import org.lwjgl.*;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
@@ -111,6 +112,25 @@ public class HelloWorld {
 
 	public static void main(String[] args) {
 		new HelloWorld().run();
+		
+		// Prims alg
+		 int nodes,i,j;
+	     Scanner in = new Scanner(System.in);
+	     System.out.println("Enter the Number of Nodes \n");
+	     nodes = in.nextInt();
+	     MazeAlgorithm p = new MazeAlgorithm();
+	     System.out.println("Enter the Cost Matrix Weights : \n");
+	        
+	     	for(i=1;i<=nodes;i++)
+	     		for(j=1;j<=nodes;j++){
+	     				p.cost[i][j]=in.nextInt();
+	            
+	     			if(p.cost[i][j]==0)
+	     				p.cost[i][j]=999;
+	          }
+	        
+	        p.isVisited[1]=1; // Initialization 
+	        p.calc(nodes);
 	}
 
 }
