@@ -26,5 +26,6 @@
 	<classpathentry kind="lib" path="libary/lwjgl-stb-natives-windows.jar"/>
 	<classpathentry kind="lib" path="libary/lwjgl-stb.jar"/>
 	<classpathentry kind="lib" path="libary/lwjgl.jar"/>
+	<classpathentry kind="lib" path="libary/slick-util.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
