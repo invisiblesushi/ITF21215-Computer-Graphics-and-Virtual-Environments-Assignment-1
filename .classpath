@@ -27,5 +27,9 @@
 	<classpathentry kind="lib" path="libary/lwjgl-stb.jar"/>
 	<classpathentry kind="lib" path="libary/lwjgl.jar"/>
 	<classpathentry kind="lib" path="libary/slick-util.jar"/>
+	<classpathentry kind="lib" path="libary/joml_license.txt"/>
+	<classpathentry kind="lib" path="libary/joml-1.9.4-javadoc.jar"/>
+	<classpathentry kind="lib" path="libary/joml-1.9.4-sources.jar"/>
+	<classpathentry kind="lib" path="libary/joml-1.9.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
