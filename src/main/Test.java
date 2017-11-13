@@ -216,8 +216,8 @@ public class Test {
             glClear(GL_COLOR_BUFFER_BIT);
             renderGrid();
             
-            modelMatrix.translation(3.0f, 50, 3.0f)
-            .rotateY(move * (float) Math.toRadians(90));
+            modelMatrix.translation(-1.0f, 5, 1.0f)
+            	.rotateY(diff * (float) Math.toRadians(90));
             
             renderCube();
 

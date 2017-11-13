@@ -1,4 +1,4 @@
-package lwjgldemo;
+package main;
 
 import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
@@ -17,8 +17,8 @@ public class LwjglDemo {
     GLFWFramebufferSizeCallback fbCallback;
 
     long window;
-    int width = 400;
-    int height = 300;
+    int width = 1280;
+    int height = 720;
 
     // JOML matrices
     Matrix4f projMatrix = new Matrix4f();
@@ -155,19 +155,15 @@ public class LwjglDemo {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             // Render some grid of cubes at different x and z positions
-            /*for (int x = -2; x <= 2; x++) {
+            for (int x = -2; x <= 4; x++) {
                 for (int z = -2; z <= 2; z++) {
                     modelMatrix.translation(x * 2.0f, 0, z * 2.0f)
                                .rotateY(angle * (float) Math.toRadians(90));
                     glLoadMatrixf(viewMatrix.mul(modelMatrix, modelViewMatrix).get(fb));
                     renderCube();
                 }
-            }*/
-            
-            modelMatrix.translation(-1.0f, 0, 1.0f)
-            .rotateY(angle * (float) Math.toRadians(90));
-            glLoadMatrixf(viewMatrix.mul(modelMatrix, modelViewMatrix).get(fb));
-            renderCube();
+            }
+
  
             glfwSwapBuffers(window);
             glfwPollEvents();
