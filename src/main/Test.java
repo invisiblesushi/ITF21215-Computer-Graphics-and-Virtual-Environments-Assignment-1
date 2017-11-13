@@ -1,5 +1,6 @@
-package org.joml.lwjgl;
+package main;
 
+import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.*;
@@ -10,40 +11,48 @@ import java.nio.IntBuffer;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
+import org.lwjgl.Version;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 
-public class FirstPersonCameraDemo {
+public class Test {
     GLFWErrorCallback errorCallback;
     GLFWKeyCallback keyCallback;
     GLFWFramebufferSizeCallback fbCallback;
     GLFWCursorPosCallback cpCallback;
 
     long window;
-    int width = 800;
-    int height = 600;
+    int width = 1280;
+    int height = 720;
     boolean windowed = true;
 
     float mouseX, mouseY;
     boolean[] keyDown = new boolean[GLFW.GLFW_KEY_LAST + 1];
-    float heightAboveGround = 1.80f;
-    float movementSpeed = 2.666f;
-    int gridSize = 40;
-    float ceiling = 3.0f;
-
+    float playerHeight = 2f;
+    float movementSpeed = 2f;
+    
+    //Grid size * 2
+    int gridSize = 20;
+    
     void run() {
-        try {
-            init();
-            loop();
+       
+		System.out.println("Hello LWJGL " + Version.getVersion() + "!");
 
-            glfwDestroyWindow(window);
-            keyCallback.free();
-            fbCallback.free();
-            cpCallback.free();
-        } finally {
-            glfwTerminate();
-            errorCallback.free();
-        }
+		init();
+		loop();
+
+		// Free the window callbacks and destroy the window
+		glfwFreeCallbacks(window);
+		glfwDestroyWindow(window);
+		/*
+        keyCallback.free();
+        fbCallback.free();
+        cpCallback.free();
+		*/
+
+		// Terminate GLFW and free the error callback
+		glfwTerminate();
+		errorCallback.free();
     }
 
     void init() {
@@ -58,39 +67,30 @@ public class FirstPersonCameraDemo {
 
         long monitor = glfwGetPrimaryMonitor();
         GLFWVidMode vidmode = glfwGetVideoMode(monitor);
-        if (!windowed) {
-            width = vidmode.width();
-            height = vidmode.height();
-        }
-        window = glfwCreateWindow(width, height, "Hello first person camera!", !windowed ? monitor : NULL, NULL);
+
+        window = glfwCreateWindow(width, height, "Assignment 2", !windowed ? monitor : NULL, NULL);
         if (window == NULL)
             throw new RuntimeException("Failed to create the GLFW window");
-
-        System.out.println("Press ESC to close the application.");
-        System.out.println("Press W/S to move forward/backward.");
-        System.out.println("Press A/D to strave left/right.");
-        System.out.println("Press left shift/ctrl to move faster/slower.");
-        System.out.println("Move the mouse to rotate.");
+        
+        
         glfwSetKeyCallback(window, keyCallback = new GLFWKeyCallback() {
-            @Override
-            public void invoke(long window, int key, int scancode, int action, int mods) {
-                if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
-                    glfwSetWindowShouldClose(window, true);
-
-                if (action == GLFW_PRESS || action == GLFW_REPEAT)
-                    keyDown[key] = true;
-                else
-                    keyDown[key] = false;
+        @Override
+        public void invoke(long window, int key, int scancode, int action, int mods) {
+            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
+                glfwSetWindowShouldClose(window, true);
+            if (action == GLFW_PRESS || action == GLFW_REPEAT)
+                keyDown[key] = true;
+            else
+                keyDown[key] = false;
             }
         });
         glfwSetFramebufferSizeCallback(window, fbCallback = new GLFWFramebufferSizeCallback() {
-            @Override
-            public void invoke(long window, int w, int h) {
-                if (w > 0 && h > 0) {
-                    width = w;
-                    height = h;
-                }
-            }
+        @Override
+        public void invoke(long window, int w, int h) {
+            width = w;
+            height = h;
+        }
+        
         });
         glfwSetCursorPosCallback(window, cpCallback = new GLFWCursorPosCallback() {
             public void invoke(long window, double xpos, double ypos) {
@@ -121,19 +121,14 @@ public class FirstPersonCameraDemo {
             glNewList(dl, GL_COMPILE);
             glBegin(GL_LINES);
             glColor3f(0.2f, 0.2f, 0.2f);
+            //Generate floor + grid
             for (int i = -gridSize; i <= gridSize; i++) {
                 glVertex3f(-gridSize, 0.0f, i);
                 glVertex3f(gridSize, 0.0f, i);
                 glVertex3f(i, 0.0f, -gridSize);
                 glVertex3f(i, 0.0f, gridSize);
             }
-            glColor3f(0.5f, 0.5f, 0.5f);
-            for (int i = -gridSize; i <= gridSize; i++) {
-                glVertex3f(-gridSize, ceiling, i);
-                glVertex3f(gridSize, ceiling, i);
-                glVertex3f(i, ceiling, -gridSize);
-                glVertex3f(i, ceiling, gridSize);
-            }
+            
             glEnd();
             glEndList();
         }
@@ -142,15 +137,17 @@ public class FirstPersonCameraDemo {
 
     void loop() {
         GL.createCapabilities();
-        glClearColor(0.97f, 0.97f, 0.97f, 1.0f);
+        //Background color, rgb Alpha
+        glClearColor(1.0f, 1.0f, 1.0f, 0.9f);
 
         long lastTime = System.nanoTime();
-
+        
+        //Camera var
         Vector3f dir = new Vector3f();
         Vector3f right = new Vector3f();
         Matrix4f mat = new Matrix4f();
         FloatBuffer fb = BufferUtils.createFloatBuffer(16);
-        Vector3f pos = new Vector3f(0, heightAboveGround, 0);
+        Vector3f pos = new Vector3f(0, playerHeight, 0);
         float rotX = 0.0f;
         float rotY = 0.0f;
 
@@ -160,6 +157,7 @@ public class FirstPersonCameraDemo {
             lastTime = thisTime;
             float move = diff * movementSpeed;
 
+            //Move speed
             if (keyDown[GLFW_KEY_LEFT_SHIFT])
                 move *= 2.0f;
             if (keyDown[GLFW_KEY_LEFT_CONTROL])
@@ -168,6 +166,7 @@ public class FirstPersonCameraDemo {
             dir.y = 0.0f; // <- restrict movement on XZ plane
             mat.positiveX(right).mul(move);
 
+            //Key movement
             if (keyDown[GLFW_KEY_W])
                 pos.add(dir);
             if (keyDown[GLFW_KEY_S])
@@ -199,6 +198,6 @@ public class FirstPersonCameraDemo {
     }
 
     public static void main(String[] args) {
-        new FirstPersonCameraDemo().run();
+        new Test().run();
     }
 }

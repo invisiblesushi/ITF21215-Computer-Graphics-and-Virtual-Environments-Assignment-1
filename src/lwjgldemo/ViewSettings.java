@@ -1,4 +1,4 @@
-package org.joml.lwjgl;
+package lwjgldemo;
 
 public interface ViewSettings {
 

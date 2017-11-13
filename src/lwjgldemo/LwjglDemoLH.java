@@ -17,8 +17,8 @@ public class LwjglDemoLH {
     GLFWFramebufferSizeCallback fbCallback;
 
     long window;
-    int width = 300;
-    int height = 300;
+    int width = 1290;
+    int height = 720;
 
     // JOML matrices
     Matrix4f projMatrix = new Matrix4f();
@@ -84,35 +84,47 @@ public class LwjglDemoLH {
     void renderCube() {
         glBegin(GL_QUADS);
         glColor3f(   0.0f,  0.0f,  0.2f );
+        
         glVertex3f(  0.5f, -0.5f,  0.5f );
         glVertex3f( -0.5f, -0.5f,  0.5f );
         glVertex3f( -0.5f,  0.5f,  0.5f );
         glVertex3f(  0.5f,  0.5f,  0.5f );
+        
         glColor3f(   0.0f,  0.0f,  1.0f );
+        
         glVertex3f(  0.5f, -0.5f, -0.5f );
         glVertex3f(  0.5f,  0.5f, -0.5f );
         glVertex3f( -0.5f,  0.5f, -0.5f );
         glVertex3f( -0.5f, -0.5f, -0.5f );
+        
         glColor3f(   1.0f,  0.0f,  0.0f );
+        
         glVertex3f(  0.5f, -0.5f,  0.5f );
         glVertex3f(  0.5f,  0.5f,  0.5f );
         glVertex3f(  0.5f,  0.5f, -0.5f );
         glVertex3f(  0.5f, -0.5f, -0.5f );
+        
         glColor3f(   0.2f,  0.0f,  0.0f );
+        
         glVertex3f( -0.5f, -0.5f, -0.5f );
         glVertex3f( -0.5f,  0.5f, -0.5f );
         glVertex3f( -0.5f,  0.5f,  0.5f );
         glVertex3f( -0.5f, -0.5f,  0.5f );
+        
         glColor3f(   0.0f,  1.0f,  0.0f );
+        
         glVertex3f(  0.5f,  0.5f, -0.5f );
         glVertex3f(  0.5f,  0.5f,  0.5f );
         glVertex3f( -0.5f,  0.5f,  0.5f );
         glVertex3f( -0.5f,  0.5f, -0.5f );
+        
         glColor3f(   0.0f,  0.2f,  0.0f );
+        
         glVertex3f(  0.5f, -0.5f,  0.5f );
         glVertex3f(  0.5f, -0.5f, -0.5f );
         glVertex3f( -0.5f, -0.5f, -0.5f );
         glVertex3f( -0.5f, -0.5f,  0.5f );
+        
         glEnd();
     }
 
