@@ -34,6 +34,12 @@ public class Test {
     //Grid size * 2
     int gridSize = 20;
     
+    // JOML matrices
+    Matrix4f projMatrix = new Matrix4f();
+    Matrix4f viewMatrix = new Matrix4f();
+    Matrix4f modelMatrix = new Matrix4f();
+    Matrix4f modelViewMatrix = new Matrix4f();
+    
     void run() {
        
 		System.out.println("LWJGL: " + Version.getVersion());
@@ -209,6 +215,11 @@ public class Test {
             glViewport(0, 0, width, height);
             glClear(GL_COLOR_BUFFER_BIT);
             renderGrid();
+            
+            modelMatrix.translation(3.0f, 50, 3.0f)
+            .rotateY(move * (float) Math.toRadians(90));
+            
+            renderCube();
 
             glfwSwapBuffers(window);
             glfwPollEvents();
