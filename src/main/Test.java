@@ -29,14 +29,14 @@ public class Test {
     float mouseX, mouseY;
     boolean[] keyDown = new boolean[GLFW.GLFW_KEY_LAST + 1];
     float playerHeight = 2f;
-    float movementSpeed = 2f;
+    float movementSpeed = 5f;
     
     //Grid size * 2
     int gridSize = 20;
     
     void run() {
        
-		System.out.println("Hello LWJGL " + Version.getVersion() + "!");
+		System.out.println("LWJGL: " + Version.getVersion());
 
 		init();
 		loop();
@@ -44,11 +44,6 @@ public class Test {
 		// Free the window callbacks and destroy the window
 		glfwFreeCallbacks(window);
 		glfwDestroyWindow(window);
-		/*
-        keyCallback.free();
-        fbCallback.free();
-        cpCallback.free();
-		*/
 
 		// Terminate GLFW and free the error callback
 		glfwTerminate();
@@ -114,33 +109,60 @@ public class Test {
         glfwShowWindow(window);
     }
 
-    int dl = -1;
     void renderGrid() {
-        if (dl == -1) {
-            dl = glGenLists(1);
-            glNewList(dl, GL_COMPILE);
-            glBegin(GL_LINES);
-            glColor3f(0.2f, 0.2f, 0.2f);
-            //Generate floor + grid
-            for (int i = -gridSize; i <= gridSize; i++) {
-                glVertex3f(-gridSize, 0.0f, i);
-                glVertex3f(gridSize, 0.0f, i);
-                glVertex3f(i, 0.0f, -gridSize);
-                glVertex3f(i, 0.0f, gridSize);
-            }
-            
-            glEnd();
-            glEndList();
+        glBegin(GL_LINES);
+        glColor3f(0.2f, 0.2f, 0.2f);
+        for (int i = -gridSize; i <= gridSize; i++) {
+            glVertex3f(-gridSize, 0.0f, i);
+            glVertex3f(gridSize, 0.0f, i);
+            glVertex3f(i, 0.0f, -gridSize);
+            glVertex3f(i, 0.0f, gridSize);
         }
-        glCallList(dl);
+        glEnd();
+    }
+    
+    void renderCube() {
+        glBegin(GL_QUADS);
+        glColor3f(   0.0f,  0.0f,  0.2f );
+        glVertex3f(  0.5f, -0.5f, -0.5f );
+        glVertex3f(  0.5f,  0.5f, -0.5f );
+        glVertex3f( -0.5f,  0.5f, -0.5f );
+        glVertex3f( -0.5f, -0.5f, -0.5f );
+        glColor3f(   0.0f,  0.0f,  1.0f );
+        glVertex3f(  0.5f, -0.5f,  0.5f );
+        glVertex3f(  0.5f,  0.5f,  0.5f );
+        glVertex3f( -0.5f,  0.5f,  0.5f );
+        glVertex3f( -0.5f, -0.5f,  0.5f );
+        glColor3f(   1.0f,  0.0f,  0.0f );
+        glVertex3f(  0.5f, -0.5f, -0.5f );
+        glVertex3f(  0.5f,  0.5f, -0.5f );
+        glVertex3f(  0.5f,  0.5f,  0.5f );
+        glVertex3f(  0.5f, -0.5f,  0.5f );
+        glColor3f(   0.2f,  0.0f,  0.0f );
+        glVertex3f( -0.5f, -0.5f,  0.5f );
+        glVertex3f( -0.5f,  0.5f,  0.5f );
+        glVertex3f( -0.5f,  0.5f, -0.5f );
+        glVertex3f( -0.5f, -0.5f, -0.5f );
+        glColor3f(   0.0f,  1.0f,  0.0f );
+        glVertex3f(  0.5f,  0.5f,  0.5f );
+        glVertex3f(  0.5f,  0.5f, -0.5f );
+        glVertex3f( -0.5f,  0.5f, -0.5f );
+        glVertex3f( -0.5f,  0.5f,  0.5f );
+        glColor3f(   0.0f,  0.2f,  0.0f );
+        glVertex3f(  0.5f, -0.5f, -0.5f );
+        glVertex3f(  0.5f, -0.5f,  0.5f );
+        glVertex3f( -0.5f, -0.5f,  0.5f );
+        glVertex3f( -0.5f, -0.5f, -0.5f );
+        glEnd();
     }
 
     void loop() {
         GL.createCapabilities();
         //Background color, rgb Alpha
         glClearColor(1.0f, 1.0f, 1.0f, 0.9f);
+        //Add skybox
 
-        long lastTime = System.nanoTime();
+        long startTime = System.nanoTime();
         
         //Camera var
         Vector3f dir = new Vector3f();
@@ -152,16 +174,12 @@ public class Test {
         float rotY = 0.0f;
 
         while (!glfwWindowShouldClose(window)) {
-            long thisTime = System.nanoTime();
-            float diff = (float) ((thisTime - lastTime) / 1E9);
-            lastTime = thisTime;
+            long nowTime = System.nanoTime();
+            float diff = (float) ((nowTime - startTime) / 1E9);
+            startTime = nowTime;
             float move = diff * movementSpeed;
 
-            //Move speed
-            if (keyDown[GLFW_KEY_LEFT_SHIFT])
-                move *= 2.0f;
-            if (keyDown[GLFW_KEY_LEFT_CONTROL])
-                move *= 0.5f;
+
             mat.positiveZ(dir).negate().mul(move);
             dir.y = 0.0f; // <- restrict movement on XZ plane
             mat.positiveX(right).mul(move);
