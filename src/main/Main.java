@@ -5,13 +5,14 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 
+import java.awt.datatransfer.FlavorTable;
 import java.nio.FloatBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
-public class LwjglDemo {
+public class Main {
     GLFWErrorCallback errorCallback;
     GLFWKeyCallback   keyCallback;
     GLFWFramebufferSizeCallback fbCallback;
@@ -28,10 +29,38 @@ public class LwjglDemo {
 
     // FloatBuffer for transferring matrices to OpenGL
     FloatBuffer fb = BufferUtils.createFloatBuffer(16);
-
+    
+    //http://home.wlu.edu/~whaleyt/classes/parallel/projects/pvm/maze/grid0.gif
+	float[] cubeX = {
+			0,1,3,4,5,6,7,8,9,
+			0,9,
+			0,1,2,3,4,6,7,8,9,
+			0,1,2,9,
+			0,4,6,7,9,
+			0,2,3,4,7,9,
+			0,2,3,4,5,7,8,9,
+			0,3,5,6,7,9,
+			0,1,9,
+			0,1,2,3,4,6,7,8,9
+			};
+	float[] cubeZ = {
+			0,0,0,0,0,0,0,0,0,
+			1,1,
+			2,2,2,2,2,2,2,2,2,
+			3,3,3,3,
+			4,4,4,4,4,
+			5,5,5,5,5,5,
+			6,6,6,6,6,6,6,6,
+			7,7,7,7,7,7,
+			8,8,8,
+			9,9,9,9,9,9,9,9,9
+			};
+	
     void run() {
         try {
             init();
+
+            
             loop();
 
             glfwDestroyWindow(window);
@@ -154,14 +183,12 @@ public class LwjglDemo {
             glMatrixMode(GL_MODELVIEW);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+            
             // Render some grid of cubes at different x and z positions
-            for (int x = -2; x <= 4; x++) {
-                for (int z = -2; z <= 2; z++) {
-                    modelMatrix.translation(x * 2.0f, 0, z * 2.0f)
-                               .rotateY(angle * (float) Math.toRadians(90));
-                    glLoadMatrixf(viewMatrix.mul(modelMatrix, modelViewMatrix).get(fb));
-                    renderCube();
-                }
+            for (int i = 0; i < cubeX.length ; i++) {
+                modelMatrix.translation(cubeX[i], 0, cubeZ[i]);
+                glLoadMatrixf(viewMatrix.mul(modelMatrix, modelViewMatrix).get(fb));
+                renderCube();
             }
 
  
@@ -171,6 +198,6 @@ public class LwjglDemo {
     }
 
     public static void main(String[] args) {
-        new LwjglDemo().run();
+        new Main().run();
     }
 }
