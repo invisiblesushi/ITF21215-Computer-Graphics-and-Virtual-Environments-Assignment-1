@@ -18,14 +18,15 @@ public class Main {
     GLFWFramebufferSizeCallback fbCallback;
 
     long window;
-    int width = 1280;
-    int height = 720;
+    int width = 1600;
+    int height = 1200;
 
     // JOML matrices
     Matrix4f projMatrix = new Matrix4f();
     Matrix4f viewMatrix = new Matrix4f();
     Matrix4f modelMatrix = new Matrix4f();
     Matrix4f modelViewMatrix = new Matrix4f();
+
 
     // FloatBuffer for transferring matrices to OpenGL
     FloatBuffer fb = BufferUtils.createFloatBuffer(16);
@@ -119,7 +120,6 @@ public class Main {
         glVertex3f( -0.5f, -0.5f, -0.5f );
         glVertex3f( -0.5f,  0.5f, -0.5f );
         glVertex3f(  0.5f,  0.5f, -0.5f );
-        glColor3f(   0.0f,  0.0f,  1.0f );
         glVertex3f(  0.5f, -0.5f,  0.5f );
         glVertex3f(  0.5f,  0.5f,  0.5f );
         glVertex3f( -0.5f,  0.5f,  0.5f );
@@ -144,6 +144,24 @@ public class Main {
         glVertex3f(  0.5f, -0.5f,  0.5f );
         glVertex3f( -0.5f, -0.5f,  0.5f );
         glVertex3f( -0.5f, -0.5f, -0.5f );
+        glEnd();
+    }
+    
+    void renderGrid() {
+    	
+        
+        //Grid size * 2
+        int gridSize = 20;
+        float gridHeight = -1.0f;
+        
+        glBegin(GL_LINES);
+        glColor3f(0.2f, 0.2f, 0.2f);
+        for (int i = -gridSize; i <= gridSize; i++) {
+            glVertex3f(-gridSize, gridHeight, i);
+            glVertex3f(gridSize, gridHeight, i);
+            glVertex3f(i, gridHeight, -gridSize);
+            glVertex3f(i, gridHeight, gridSize);
+        }
         glEnd();
     }
 
@@ -177,7 +195,7 @@ public class Main {
             glLoadMatrixf(projMatrix.get(fb));
 
             // Set lookat view matrix
-            viewMatrix.setLookAt(0.0f, 4.0f, 10.0f,
+            viewMatrix.setLookAt(0.0f, 6.0f, 20.0f,
                                  0.0f, 0.0f, 0.0f,
                                  0.0f, 1.0f, 0.0f);
             glMatrixMode(GL_MODELVIEW);
@@ -187,10 +205,12 @@ public class Main {
             // Render some grid of cubes at different x and z positions
             for (int i = 0; i < cubeX.length ; i++) {
                 modelMatrix.translation(cubeX[i], 0, cubeZ[i]);
+                modelMatrix.scale(10,10,10);
                 glLoadMatrixf(viewMatrix.mul(modelMatrix, modelViewMatrix).get(fb));
                 renderCube();
             }
-
+            
+            renderGrid();
  
             glfwSwapBuffers(window);
             glfwPollEvents();
