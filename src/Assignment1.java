@@ -35,10 +35,10 @@ import static com.jogamp.opengl.GL4.GL_MAP_PERSISTENT_BIT;
 * 
 * Koden er skrevet i Eclipse med JOGL libary inkludert( gluegen-rt.jar, jogl-all.jar )
 * 
-* Får ikke implementert sphere ifølge kode eksemple fra nettside, feilmelding:
+* FÃ¥r ikke implementert sphere ifÃ¸lge kode eksemple fra nettside, feilmelding:
 * Caused by: com.jogamp.opengl.GLException: element vertex_buffer_object must be bound to call this method
 * 
-* Lys er ikke implementert, fikk det ikke til å fungere på min maskin.
+* Lys er ikke implementert, fikk det ikke til Ã¥ fungere pÃ¥ min maskin.
 */
 public class Assignment1 implements GLEventListener, KeyListener {
 
@@ -59,7 +59,7 @@ public class Assignment1 implements GLEventListener, KeyListener {
     };
 
     // Vertex data for cube x y z u w
-    //u w definerer hvor texture skal være
+    //u w definerer hvor texture skal vÃ¦re
     // Kilde http://it.hiof.no/~larsvmag/itf21215_17/examples.html
     private float[] vertexDataCube = {
         // Front
@@ -111,7 +111,7 @@ public class Assignment1 implements GLEventListener, KeyListener {
     };
     
     // Vertex data
-    // Kilde, laget selv ut i fra eksempel på nett
+    // Kilde, laget selv ut i fra eksempel pÃ¥ nett
     private float[] vertexDataPyramid = {
            
          // Bottom
@@ -181,18 +181,18 @@ public class Assignment1 implements GLEventListener, KeyListener {
     GLProfile glProfile;
 
     // The texture filename 
-    private final String textureFilename = "src/daniel_chen_assignment1/texture.png";
-    private final String textureFilename2 = "src/daniel_chen_assignment1/grass.png";
-    private final String textureFilename3 = "src/daniel_chen_assignment1/door.png";
-    private final String textureFilename4 = "src/daniel_chen_assignment1/skybox.png";
-    private final String textureFilename5 = "src/daniel_chen_assignment1/dark.png";
-    private final String textureFilename6 = "src/daniel_chen_assignment1/roof.png";
-    private final String textureFilename7 = "src/daniel_chen_assignment1/water.png";
-    private final String textureFilename8 = "src/daniel_chen_assignment1/window.png";
-    private final String textureFilename9 = "src/daniel_chen_assignment1/wood.png";
-    private final String textureFilename10 = "src/daniel_chen_assignment1/bush.png";
-    private final String textureFilename11 = "src/daniel_chen_assignment1/tree.png";
-    private final String textureFilename12 = "src/daniel_chen_assignment1/cloud.png";
+    private final String textureFilename = "src/assignment1/texture.png";
+    private final String textureFilename2 = "src/assignment1/grass.png";
+    private final String textureFilename3 = "src/assignment1/door.png";
+    private final String textureFilename4 = "src/assignment1/skybox.png";
+    private final String textureFilename5 = "src/assignment1/dark.png";
+    private final String textureFilename6 = "src/assignment1/roof.png";
+    private final String textureFilename7 = "src/assignment1/water.png";
+    private final String textureFilename8 = "src/assignment1/window.png";
+    private final String textureFilename9 = "src/assignment1/wood.png";
+    private final String textureFilename10 = "src/assignment1/bush.png";
+    private final String textureFilename11 = "src/assignment1/tree.png";
+    private final String textureFilename12 = "src/assignment1/cloud.png";
 
     // Create buffers for the names
     private IntBuffer bufferNames = GLBuffers.newDirectIntBuffer(Buffer.MAX);
